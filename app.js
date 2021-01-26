@@ -12,17 +12,26 @@ function fitToContainer(canvas){
     canvas.height = canvas.offsetHeight;
 }
 
-let origin = {x:0,y:0,z:0}
-let dp = 2000;
+//Constants
 
+let dp = 2000; //Distance between eye and picture plane
+const groundLvl = 800;
+
+//Scaling
 let p = []
-let xAdj = 5000;
-let yAdj = 5000;
-const scale = 0.8
+let xAdj = 50;
+let yAdj = 50;
+const scale = 5
 
+//Lists
 let objList = []
 
-function box(wdt,hgt,dpth,x,y,z){
+//Colours
+const boxCol = 'rgba(255,255,0,1)'
+const groundCol = 'rgba(255,0,0,1)'
+
+//Simulate 3d box
+function makeBox(wdt,hgt,dpth,x,y,z,colour){
     let a = {x: x,       y: y,       z: z};
     let b = {x: x + wdt, y: y,       z: z};
     let c = {x: x + wdt, y: y - hgt, z: z};
@@ -30,55 +39,49 @@ function box(wdt,hgt,dpth,x,y,z){
     let e = {x: x,       y: y,       z: z + dpth};
     let f = {x: x + wdt, y: y,       z: z + dpth};
     let g = {x: x + wdt, y: y - hgt, z: z + dpth};
-    let h = {x: x,       y: y - hgt, z: z + dpth}
-    objList.push({a,b,c,d,e,f,g,h})
+    let h = {x: x,       y: y - hgt, z: z + dpth};
+    objList.push({a,b,c,d,e,f,g,h});
+    scaleObj(a,b,c,d,e,f,g,h)
+    renderObj(a,b,c,d,e,f,g,h,colour);
 }
 
-
-let a = {x:-250, y:500, z: 25000}
-let b = {x:250, y:500, z: 25000}
-let c = {x:250, y:0, z: 25000}
-let d = {x:-250, y:0, z: 25000}
-let e = {x:-250, y:500, z: 50000}
-let f = {x:250, y:500, z: 50000}
-let g = {x:250, y:0, z: 50000}
-let h = {x:-250, y:0, z: 50000}
-
-p.push(a,b,c,d,e,f,g,h)
-
-for (let i = 0; i < p.length; i++){
-    p[i].x += xAdj;
-    p[i].x /= scale;
-    p[i].y += yAdj;
-    p[i].y /= scale;
-    p[i].x *= (dp/p[i].z)
-    p[i].y *= (dp/p[i].z) 
+//Scale box
+function scaleObj(a,b,c,d,e,f,g,h){
+    const args = Array.from(arguments);
+    args.forEach(el => {
+        el.x += xAdj;
+        el.x /= scale;
+        el.y += yAdj;
+        el.y /= scale;
+        el.x *= (dp/el.z)
+        el.y *= (dp/el.z) 
+    })
 }
 
-console.log(p)
+function renderObj(a,b,c,d,e,f,g,h,colour){
+    drawFace(b,f,g,c,colour);
+    drawFace(a,b,c,d,colour);
+    drawFace(d,c,g,h,colour);
+    drawFace(a,e,h,d,colour);
+}
 
-function drawFace(a,b,c,d){
+function drawFace(p1,p2,p3,p4,colour){
     ctx.beginPath();
-    ctx.moveTo(p[a].x,p[a].y);
-    ctx.lineTo(p[b].x,p[b].y);
-    ctx.lineTo(p[c].x,p[c].y);
-    ctx.lineTo(p[d].x,p[d].y);
-    ctx.lineTo(p[a].x,p[a].y);
-    ctx.fillStyle = "grey";
+    ctx.moveTo(p1.x,p1.y);
+    ctx.lineTo(p2.x,p2.y);
+    ctx.lineTo(p3.x,p3.y);
+    ctx.lineTo(p4.x,p4.y);
+    ctx.lineTo(p1.x,p1.y);
+    ctx.fillStyle = colour;
     ctx.strokeStyle = "black";
     ctx.fill();
     ctx.closePath();
     ctx.stroke();
+    console.log(p1)
 }
 
-function draw(){
-    
-    //drawFace(4,5,6,7)
-    drawFace(1,2,6,5)
-    drawFace(3,2,6,7)
-    drawFace(0,4,7,3)
-    //drawFace(0,1,5,4)
-    drawFace(0,1,2,3)
-}
+const background = makeBox(2000,2000,1,0,2000,600,'rgb(153, 204, 255)')
+const bawxxyz = makeBox(2000,1,2000,300,groundLvl,600,groundCol)
+const bawx = makeBox(500,200,200,500,groundLvl,700,boxCol)
+const ground = makeBox(200,100,600,600,groundLvl,700,boxCol)
 
-draw();

@@ -1,0 +1,10 @@
+html, body {  
+    padding: 0; 
+    margin: 1%;
+    height: 100%;
+    font-family: monospace;
+    color: aqua;
+    text-align: center;
+    font-size: 30px;
+    
+}
