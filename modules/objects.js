@@ -11,7 +11,6 @@ const scale = 5
 let dp = 5000; //Distance between eye and picture plane
 const x0 = 400; //Vanishing point
 const y0 = 400;
-const groundLvl = 2000;
 
 //dimensions(width, height, depth, x, y, z)
 const makeBox = (wdt, hgt, dpth, x, y, z, colour, objList) => {
@@ -31,7 +30,9 @@ function mapPoints(wdt,hgt,dpth,x,y,z,colour){
     project2D(a,b,c,d,e,f,g,h,colour);
 }
 
-//Scale box
+// Descriptive geometry inspired by 
+// https://math.stackexchange.com/questions/2305792/3d-projection-on-a-2d-plane-weak-maths-ressources/2306853#2306853
+
 function project2D(a,b,c,d,e,f,g,h,colour){
     const args = Array.from(arguments);
     args.forEach(el => {
