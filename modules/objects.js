@@ -14,8 +14,8 @@ let objList = []
 
 //dimensions(width, height, depth, x, y, z)
 const makeBox = (wdt, hgt, dpth, x, y, z, colour, objList) => {
-    objList.push({wdt: wdt, hgt: hgt, dpth: dpth, x: x, y: y, z: z, colour: colour, id: objList.length});
-    mapPoints(wdt, hgt, dpth, x, y, z, colour, objList.length);
+    objList.push({wdt: wdt, hgt: hgt, dpth: dpth, x: x, y: y, z: z, colour: colour, id: objList.length, a: 0, b: 0, c: 0, d: 0, e: 0, f: 0, g: 0, h: 0});
+    mapPoints(wdt, hgt, dpth, x, y, z, colour, objList.length - 1);
 }
 
 //Simulate 3d box
@@ -48,8 +48,14 @@ function project2D(a,b,c,d,e,f,g,h,colour,id){
             el.y = y0 + (el.y - y0) * (dp/(el.z+dp));
         }
     })
-
-    obj2DList.push({a,b,c,d,e,f,g,h,colour,id});
+    objList[id].a = a;
+    objList[id].b = b;
+    objList[id].c = c;
+    objList[id].d = d;
+    objList[id].e = e;
+    objList[id].f = f;
+    objList[id].g = g;
+    objList[id].h = h;
 }
 
 export { makeBox, mapPoints, project2D, obj2DList, objList }

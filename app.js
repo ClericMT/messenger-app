@@ -23,9 +23,7 @@ canvas.onmousedown = function(e) {
     let rect = canvas.getBoundingClientRect();
     x = e.pageX - rect.left;
     y = e.pageY - rect.top;
-    console.log(isOverObject(x, y));
-    console.log(objTrue);
-    console.log(selectedObj)
+    isOverObject(x, y);
     canvas.addEventListener('mousemove', drag);
     canvas.onmouseup = function(e) {
         canvas.removeEventListener('mousemove', drag);
@@ -38,13 +36,14 @@ const drag = (e) => {
     let rect = canvas.getBoundingClientRect();
     x = e.pageX - rect.left
     if (selectedObj){
-        console.log(x)
         selectedObj.x = x;
+        const o = objList[selectedObj.id];
+        mapPoints(o.wdt, o.hgt, o.dpth, o.x, o.y, o.z, o.colour, o.id)
     }
 }
 
 const isOverObject = (x, y) => {
-    obj2DList.forEach((obj) => {
+    objList.forEach((obj) => {
         if (x < obj.b.x && x > obj.a.x && y < obj.a.y && y > obj.d.y){
             findObject(obj.id)
             objTrue = true;
@@ -65,7 +64,7 @@ const findObject = (id) => {
 
 function draw(){
     ctx.clearRect(0, 0, 20000, 20000)
-    obj2DList.forEach(obj => {
+    objList.forEach(obj => {
         renderObj(obj.a, obj.b, obj.c, obj.d, obj.e, obj.f, obj.g, obj.h, obj.colour);
     })
     window.requestAnimationFrame(draw)
@@ -73,7 +72,6 @@ function draw(){
 
 const updateList = () => {
     makeBox(200,200,200,500,500,500,colours.box,objList)
-    console.log(obj2DList)
 }
 
 draw()
