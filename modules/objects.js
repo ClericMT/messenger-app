@@ -1,7 +1,7 @@
 //Constants
 let dp = 11000; //Distance between eye and picture plane
-let x0 = 300; //Vanishing point
-let y0 = 200;
+let x0 = 150; //Vanishing point
+let y0 = 100;
 const x0init = 300;
 const y0init = 200;
 

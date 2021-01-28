@@ -23,10 +23,19 @@ let initMouse = 0;
 
 //Dimensions(width, height, depth, x, y, z)
 const background = makeBox(20000, 20000, 1, -6000, 10000, 600, colours.background, envList)
-const ground = makeBox(200000, 1, 200000, -40000, groundLvl, -10000, colours.ground, envList)
-const skyscraper = makeBox(500, 20000, 10000, 5000, groundLvl, 100000, colours.box, objList)
-const lilBox = makeBox(500, 500, 500, -200, groundLvl, 45000, colours.box, objList)
-const cube = makeBox(500, 500, 500, 10000, groundLvl, 40000, colours.box, objList)
+//const ground = makeBox(200000, 1, 200000, -40000, groundLvl, -10000, colours.ground, envList)
+//const skyscraper = makeBox(500, 20000, 10000, 5000, groundLvl, 100000, colours.box, objList)
+//const lilBox = makeBox(500, 500, 500, -200, groundLvl, 45000, colours.box, objList)
+//const cube = makeBox(500, 500, 500, 10000, groundLvl, 40000, colours.box, objList)
+
+const generateRandomEnv = (numObjs) =>{
+    for (let i = 0; i < numObjs; i++){
+        makeBox(Math.random()*2000,Math.random()*2000,Math.random()*20000,Math.random()*10000,Math.random()* 10000, Math.random()*80000+120000, `rgba(${Math.random()*255},${Math.random()*255},${Math.random()*255},${Math.random()})`, objList)
+    }
+}
+
+
+generateRandomEnv(100)
 
 //Event Listeners
 canvas.onmousedown = function(e) {
@@ -73,18 +82,16 @@ window.onkeydown = function(e) {
         case '6':
             adjustCam(-50, 0, 0);
             break;
-        case 'ArrowLeft':
+        case 'a':
             movePlayer(500, 0);
             break;
-        case 'ArrowRight':
+        case 'd':
             movePlayer(-500, 0);
             break;
-        case 'ArrowUp':
+        case 'w':
             movePlayer(0, -500);
-            console.log(dp);
-            console.log(objList[0].x)
             break;
-        case 'ArrowDown':
+        case 's':
             movePlayer(0, 500);
             break;
         default:
