@@ -1,15 +1,14 @@
 const express = require('express');
 const socketIO = require('socket.io');
 
-const PORT = process.env.PORT || 3000;
-const INDEX = '/views/index.ejs'
+const app = require('express')();
+const http = require('http').createServer(app);
 
-const app = express();
-const server = express()
-  .use((req, res) => res.sendFile(INDEX, { root: __dirname }))
-  .listen(PORT, () => console.log(`Listening on ${PORT}`));
+http.listen(3000, () => {
+  console.log('listening on *:3000');
+});
 
-const io = socketIO(server);
+const io = socketIO(http);
 
 const bodyParser = require('body-parser');
 const { json } = require('body-parser');
