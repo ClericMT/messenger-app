@@ -4,10 +4,9 @@ const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const bodyParser = require('body-parser');
 const { json } = require('body-parser');
-let port = process.env.PORT;
-if (port == null || port == "") {
-  port = 8000;
-}
+const port = process.env.PORT || 3000;
+
+http.listen(port, () => console.log(`Listening on ${port}`));
 
 app.use(express.static("public"));
 app.set('view engine', 'ejs') //sets EJS as template engine
@@ -38,8 +37,5 @@ io.on('connection', (socket) => {
   });
 });
 
-http.listen(port, () => {
-  console.log('listening on *:3000');
-});
 
 
