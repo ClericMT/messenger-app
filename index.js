@@ -1,12 +1,18 @@
 const express = require('express');
+const socketIO = require('socket.io');
+
+const PORT = process.env.PORT || 3000;
+const INDEX = '/views/index.ejs'
+
 const app = express();
-const http = require('http').createServer(app);
-const io = require('socket.io')(http);
+const server = express()
+  .use((req, res) => res.sendFile(INDEX, { root: __dirname }))
+  .listen(PORT, () => console.log(`Listening on ${PORT}`));
+
+const io = socketIO(server);
+
 const bodyParser = require('body-parser');
 const { json } = require('body-parser');
-const port = process.env.PORT || 3000;
-
-http.listen(port, () => console.log(`Listening on ${port}`));
 
 app.use(express.static("public"));
 app.set('view engine', 'ejs') //sets EJS as template engine
