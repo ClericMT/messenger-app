@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>3D engine</title>
+    <title>Socket.IO chat</title>
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <div id="stage">
-        <canvas id="canvas" width="2000" height ="2000"></canvas>
-    </div>
-    <script src="/main.js" type="module"></script>
+    <header id="world">World</header>
+    <ul id="messages"></ul>
+    <form id="form" action="">
+      <input id="input" autocomplete="off" placeholder="enter message" /><button>Send</button>
+    </form>
+    <form id="username" action="">
+      <input id="usrinput" autocomplete="off" placeholder="enter username" /><button>Send</button>
+    </form>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="/main.js" type="module"></script>
   </body>
 </html>

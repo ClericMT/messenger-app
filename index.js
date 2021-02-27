@@ -1,37 +1,13 @@
-
-const SerialPort = require('serialport');
-const Readline = require('@serialport/parser-readline');
-const port = new SerialPort('COM4', { baudRate: 9600 });
-const parser = port.pipe(new Readline({ delimiter: '\n' }));
-
-
-let ax;
-let ay;
-let az;
-let A1;
-
-// Read the port data
-port.on("open", () => {
-  console.log('serial port open');
-});
-parser.on('data', data =>{
-    accel = data.split(' ');
-    ax = accel[0];
-    ay = accel[1];
-    az = accel[2];
-    A1 = accel[3];
-    accel = [ax, ay, az, A1]
-
-    io.sockets.emit('accel', (accel));
-});
-
-
 const express = require('express');
 const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const bodyParser = require('body-parser');
 const { json } = require('body-parser');
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 8000;
+}
 
 app.use(express.static("public"));
 app.set('view engine', 'ejs') //sets EJS as template engine
@@ -44,13 +20,26 @@ app.get('/', (req, res) => { //When the main page loads, the esj file will rende
 })
 
 io.on('connection', (socket) => {
-    console.log('a user connected');
-    socket.on('disconnect', () => {
-      console.log('user disconnected');
-    });
+  console.log('a user connected');
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
   });
+});
 
-http.listen(3000, () => {
+io.on('connection', (socket) => {
+  socket.on('chat message', (msg) => {
+    io.emit('chat message', msg);
+  });
+});
+
+io.on('connection', (socket) => {
+  socket.on('new username', (msg) => {
+    io.emit('new username', msg);
+  });
+});
+
+http.listen(port, () => {
   console.log('listening on *:3000');
 });
+
 
